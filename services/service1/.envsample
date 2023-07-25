@@ -1,0 +1,6 @@
+STAGE=[stage]
+PROFILE=[aws-profile]
+REGION=[aws-region]
+DB=[mongodb-srv-url]
+JWT_SECRET=[JWT-SECRET-TEXT]
+DOMAIN=[AWS-CUSTOM-DOMAIN]

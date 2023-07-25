@@ -1,0 +1,53 @@
+service: service-v1
+useDotenv: true
+
+# frameworkVersion: ">=1.2.0 <2.0.0"
+# frameworkVersion: '^3'
+package:
+  individually: true
+  excludeDevDependencies: true
+
+plugins:
+  - serverless-dotenv-plugin
+  - serverless-bundle
+  - serverless-offline
+  - serverless-domain-manager
+
+custom:
+  secrets: ${file(.env.${sls:stage, self:provider.stage, 'dev'})}
+  customDomain:
+    domainName: ${env:DOMAIN}
+    basePath: "basepath"
+    stage: ${sls:stage, self:provider.stage, 'dev'}
+    createRoute53Record: true
+  serverless-offline:
+    httpPort: 4000
+  bundle:
+    esbuild: true
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+  stage: ${opt:stage, 'dev'}
+  profile: ${env:PROFILE}
+  region: ${env:REGION}
+  timeout: 30
+
+functions:
+  resetPassword:
+    handler: src/handler.resetPassword
+    events:
+      - http:
+          path: /resetPassword
+          method: GET
+          cors: true
+  healthCheck:
+    handler: src/handler.get
+    events:
+      - http:
+          path: /check
+          method: GET
+          cors: true
+
+resources:
+  - ${file(../../resources/api-gateway-errors.yml)}

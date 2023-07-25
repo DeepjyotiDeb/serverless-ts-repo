@@ -1,0 +1,10 @@
+{
+  "scripts": {
+    "start": "serverless offline --stage prod",
+    "dev": "serverless offline --stage dev",
+    "build": "serverless package",
+    "deploy": "serverless deploy"
+  },
+  "dependencies": {},
+  "devDependencies": {}
+}
